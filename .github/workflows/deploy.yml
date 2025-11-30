@@ -18,4 +18,5 @@ jobs:
       - run: npm run build
       - run: npm run deploy
         env:
+          GIT_USER: aprountzos
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
