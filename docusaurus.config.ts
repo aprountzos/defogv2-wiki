@@ -9,11 +9,12 @@ const config = {
   tagline: 'Production-ready multi-cluster service mesh',
   favicon: 'img/favicon.ico',
 
-  url: 'https://your-domain.com',
-  baseUrl: '/',
+  // GitHub Pages URL
+  url: 'https://aprountzos.github.io',
+  baseUrl: '/defogv2-wiki/',
 
-  organizationName: 'yourorg',
-  projectName: 'defog-platform',
+  organizationName: 'aprountzos',
+  projectName: 'defogv2-wiki',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -36,9 +37,9 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/yourorg/defog-platform/tree/main/docs/',
+          editUrl: 'https://github.com/aprountzos/defogv2-wiki/tree/main/docs/',
         },
-        blog: false, // Disable blog for now
+        blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -49,12 +50,10 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Mermaid theme configuration
       mermaid: {
         theme: {light: 'neutral', dark: 'dark'},
         options: {
-          maxTextSize: 90000, // Increased limit for complex diagrams
-          // Global flowchart and sequence options to reduce clipping & improve spacing
+          maxTextSize: 90000,
           flowchart: {
             nodeSpacing: 50,
             rankSpacing: 50,
@@ -92,7 +91,7 @@ const config = {
             position: 'left',
           },
           {
-            href: 'https://github.com/yourorg/defog-platform',
+            href: 'https://github.com/aprountzos/defogv2-wiki',
             label: 'GitHub',
             position: 'right',
           },
@@ -104,44 +103,23 @@ const config = {
           {
             title: 'Docs',
             items: [
-              {
-                label: 'Get Started',
-                to: '/docs',
-              },
-              {
-                label: 'Architecture',
-                to: '/docs/architecture/overview',
-              },
-              {
-                label: 'Installation',
-                to: '/docs/installation/cluster-setup',
-              },
+              {label: 'Get Started', to: '/docs'},
+              {label: 'Architecture', to: '/docs/architecture/overview'},
+              {label: 'Installation', to: '/docs/installation/cluster-setup'},
             ],
           },
           {
             title: 'Components',
             items: [
-              {
-                label: 'Service Auto-Exporter',
-                to: '/docs/components/service-auto-exporter',
-              },
-              {
-                label: 'Linkerd Setup',
-                to: '/docs/components/linkerd-configuration',
-              },
+              {label: 'Service Auto-Exporter', to: '/docs/components/service-auto-exporter'},
+              {label: 'Linkerd Setup', to: '/docs/components/linkerd-configuration'},
             ],
           },
           {
             title: 'Community',
             items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/yourorg/defog-platform',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discord.gg/yourserver',
-              },
+              {label: 'GitHub', href: 'https://github.com/aprountzos/defogv2-wiki'},
+              {label: 'Discord', href: 'https://discord.gg/yourserver'},
             ],
           },
         ],
