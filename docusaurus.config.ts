@@ -81,16 +81,6 @@ const config = {
             label: 'Docs',
           },
           {
-            to: '/docs/getting-started/prerequisites',
-            label: 'Get Started',
-            position: 'left',
-          },
-          {
-            to: '/docs/components/service-auto-exporter',
-            label: 'Components',
-            position: 'left',
-          },
-          {
             href: 'https://github.com/aprountzos/defogv2-wiki',
             label: 'GitHub',
             position: 'right',
@@ -103,23 +93,19 @@ const config = {
           {
             title: 'Docs',
             items: [
-              {label: 'Get Started', to: '/docs'},
-              {label: 'Architecture', to: '/docs/architecture/overview'},
-              {label: 'Installation', to: '/docs/installation/cluster-setup'},
+              {label: 'Get Started', to: '/docs'}
             ],
           },
           {
             title: 'Components',
             items: [
-              {label: 'Service Auto-Exporter', to: '/docs/components/service-auto-exporter'},
-              {label: 'Linkerd Setup', to: '/docs/components/linkerd-configuration'},
+              {label: 'Service Auto-Exporter', to: '/docs/service-auto-exporter'},
             ],
           },
           {
             title: 'Community',
             items: [
               {label: 'GitHub', href: 'https://github.com/aprountzos/defogv2-wiki'},
-              {label: 'Discord', href: 'https://discord.gg/yourserver'},
             ],
           },
         ],
