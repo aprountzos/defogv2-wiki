@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdefogv_2_wiki=globalThis.webpackChunkdefogv_2_wiki||[]).push([[617],{617:(e,i,a)=>{a.d(i,{createPieServices:()=>k.f});var k=a(9150);a(7960)}}]);

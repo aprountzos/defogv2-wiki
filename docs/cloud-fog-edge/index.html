@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-cloud-fog-edge" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Cloud-Fog-Edge Architecture | Defog Platform</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://aprountzos.github.io/defogv2-wiki/img/defog-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://aprountzos.github.io/defogv2-wiki/img/defog-social-card.jpg"><meta data-rh="true" property="og:url" content="https://aprountzos.github.io/defogv2-wiki/docs/cloud-fog-edge"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Cloud-Fog-Edge Architecture | Defog Platform"><meta data-rh="true" name="description" content="Understanding the hybrid cloud-fog-edge computing paradigm and its applications"><meta data-rh="true" property="og:description" content="Understanding the hybrid cloud-fog-edge computing paradigm and its applications"><link data-rh="true" rel="icon" href="/defogv2-wiki/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://aprountzos.github.io/defogv2-wiki/docs/cloud-fog-edge"><link data-rh="true" rel="alternate" href="https://aprountzos.github.io/defogv2-wiki/docs/cloud-fog-edge" hreflang="en"><link data-rh="true" rel="alternate" href="https://aprountzos.github.io/defogv2-wiki/docs/cloud-fog-edge" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Cloud-Fog-Edge Architecture","item":"https://aprountzos.github.io/defogv2-wiki/docs/cloud-fog-edge"}]}</script><link rel="stylesheet" href="/defogv2-wiki/assets/css/styles.f9b9bc72.css">
+<script src="/defogv2-wiki/assets/js/runtime~main.f0374272.js" defer="defer"></script>
+<script src="/defogv2-wiki/assets/js/main.a5fbb24b.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/defogv2-wiki/img/logo.svg"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/defogv2-wiki/"><div class="navbar__logo"><img src="/defogv2-wiki/img/logo.svg" alt="Defog Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/defogv2-wiki/img/logo.svg" alt="Defog Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Defog</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/defogv2-wiki/docs/intro">Docs</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/aprountzos/defogv2-wiki" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/defogv2-wiki/docs/intro"><span title="Tutorial Intro" class="linkLabel_WmDU">Tutorial Intro</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/defogv2-wiki/docs/service-auto-exporter"><span title="Service Auto-Exporter Controller" class="linkLabel_WmDU">Service Auto-Exporter Controller</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/defogv2-wiki/docs/cloud-fog-edge"><span title="Cloud-Fog-Edge Architecture" class="linkLabel_WmDU">Cloud-Fog-Edge Architecture</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/defogv2-wiki/docs/category/tutorial---basics"><span title="Tutorial - Basics" class="categoryLinkLabel_W154">Tutorial - Basics</span></a><button aria-label="Expand sidebar category &#x27;Tutorial - Basics&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/defogv2-wiki/docs/category/tutorial---extras"><span title="Tutorial - Extras" class="categoryLinkLabel_W154">Tutorial - Extras</span></a><button aria-label="Expand sidebar category &#x27;Tutorial - Extras&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/defogv2-wiki/docs/local-setup/linkerd"><span title="local-setup" class="categoryLinkLabel_W154">local-setup</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/defogv2-wiki/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Cloud-Fog-Edge Architecture</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Cloud-Fog-Edge Architecture</h1></header>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-is-cloud-fog-edge-computing">What is Cloud-Fog-Edge Computing?<a href="#what-is-cloud-fog-edge-computing" class="hash-link" aria-label="Direct link to What is Cloud-Fog-Edge Computing?" title="Direct link to What is Cloud-Fog-Edge Computing?" translate="no">​</a></h2>
+<p>Cloud-Fog-Edge computing represents an evolutionary paradigm in distributed computing that addresses the limitations of traditional centralized cloud architectures. By distributing computational resources across three hierarchical layers, this model brings processing power closer to data sources and end-users, optimizing for latency, bandwidth, and real-time responsiveness.</p>
+<!-- -->
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-three-layers-explained">The Three Layers Explained<a href="#the-three-layers-explained" class="hash-link" aria-label="Direct link to The Three Layers Explained" title="Direct link to The Three Layers Explained" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="️-cloud-computing-layer">☁️ Cloud Computing Layer<a href="#️-cloud-computing-layer" class="hash-link" aria-label="Direct link to ☁️ Cloud Computing Layer" title="Direct link to ☁️ Cloud Computing Layer" translate="no">​</a></h3>
+<p>The <strong>Cloud</strong> represents the traditional centralized computing model—massive data centers operated by providers like AWS, Google Cloud, Microsoft Azure, and others.</p>
+<p><strong>Core Characteristics:</strong></p>
+<ul>
+<li class=""><strong>Location</strong>: Geographically distributed data centers, often hundreds or thousands of miles from end-users</li>
+<li class=""><strong>Resources</strong>: Virtually unlimited computing power, storage, and networking</li>
+<li class=""><strong>Access</strong>: Available over the internet</li>
+<li class=""><strong>Economics</strong>: Pay-as-you-go, highly scalable</li>
+<li class=""><strong>Latency</strong>: 100-500ms typical round-trip time</li>
+</ul>
+<p><strong>What It&#x27;s Good For:</strong></p>
+<ul>
+<li class="">Long-term data storage and archival</li>
+<li class="">Big data analytics and batch processing</li>
+<li class="">Machine learning model training</li>
+<li class="">Centralized databases and data warehouses</li>
+<li class="">Complex computational workloads</li>
+<li class="">Applications where latency is not critical</li>
+</ul>
+<p><strong>Example Use Cases:</strong></p>
+<ul>
+<li class="">Netflix&#x27;s content library and recommendation algorithms</li>
+<li class="">Dropbox file storage and synchronization</li>
+<li class="">Salesforce CRM databases</li>
+<li class="">Scientific simulations and research computing</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="️-fog-computing-layer">🌫️ Fog Computing Layer<a href="#️-fog-computing-layer" class="hash-link" aria-label="Direct link to 🌫️ Fog Computing Layer" title="Direct link to 🌫️ Fog Computing Layer" translate="no">​</a></h3>
+<p>The <strong>Fog</strong> layer, also called <strong>edge cloud</strong> or <strong>cloudlets</strong>, represents intermediate computing nodes positioned between the cloud and edge. The term &quot;fog&quot; is apt—it&#x27;s like a cloud closer to the ground.</p>
+<p><strong>Core Characteristics:</strong></p>
+<ul>
+<li class=""><strong>Location</strong>: Regional data centers, ISP facilities, cellular base stations, or enterprise premises</li>
+<li class=""><strong>Resources</strong>: Moderate computing, storage, and networking capabilities</li>
+<li class=""><strong>Proximity</strong>: Closer to data sources than cloud, farther than edge</li>
+<li class=""><strong>Latency</strong>: 10-100ms typical round-trip time</li>
+<li class=""><strong>Scale</strong>: Serves specific geographic regions or organizational units</li>
+</ul>
+<p><strong>What It&#x27;s Good For:</strong></p>
+<ul>
+<li class="">Data aggregation and filtering</li>
+<li class="">Real-time analytics on streaming data</li>
+<li class="">Temporary data storage and caching</li>
+<li class="">Protocol translation and normalization</li>
+<li class="">Load balancing across edge devices</li>
+<li class="">Regional application hosting</li>
+</ul>
+<p><strong>Example Use Cases:</strong></p>
+<ul>
+<li class="">Smart city infrastructure coordinating traffic lights across a district</li>
+<li class="">Retail chain processing transactions from multiple stores in a region</li>
+<li class="">Video surveillance systems aggregating feeds from multiple cameras</li>
+<li class="">Telecom applications running at cell tower sites</li>
+</ul>
+<p><strong>Why Fog Exists:</strong></p>
+<p>The fog layer addresses a critical gap: edge devices are too constrained for complex processing, while sending everything to the cloud creates bandwidth bottlenecks and unacceptable latency. Fog provides a middle ground for:</p>
+<ul>
+<li class=""><strong>Filtering</strong>: Reducing data volume before cloud transmission</li>
+<li class=""><strong>Aggregation</strong>: Combining data from multiple edge sources</li>
+<li class=""><strong>Local processing</strong>: Handling time-sensitive operations</li>
+<li class=""><strong>Resilience</strong>: Continuing operation during cloud disconnection</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-edge-computing-layer">📱 Edge Computing Layer<a href="#-edge-computing-layer" class="hash-link" aria-label="Direct link to 📱 Edge Computing Layer" title="Direct link to 📱 Edge Computing Layer" translate="no">​</a></h3>
+<p>The <strong>Edge</strong> represents computing resources at or near the physical location where data is generated and consumed—the &quot;edge&quot; of the network.</p>
+<p><strong>Core Characteristics:</strong></p>
+<ul>
+<li class=""><strong>Location</strong>: On-premises, in devices, or in immediate proximity to data sources</li>
+<li class=""><strong>Resources</strong>: Highly constrained—limited CPU, memory, and storage</li>
+<li class=""><strong>Proximity</strong>: Direct connection to sensors, devices, and users</li>
+<li class=""><strong>Latency</strong>: 1-10ms typical response time</li>
+<li class=""><strong>Scale</strong>: Serves individual devices, rooms, or small facilities</li>
+</ul>
+<p><strong>What It&#x27;s Good For:</strong></p>
+<ul>
+<li class="">Ultra-low latency applications</li>
+<li class="">Real-time decision making</li>
+<li class="">Privacy-sensitive data processing</li>
+<li class="">Bandwidth optimization (process locally, send only results)</li>
+<li class="">Offline operation capability</li>
+<li class="">Immediate user interaction</li>
+</ul>
+<p><strong>Example Use Cases:</strong></p>
+<ul>
+<li class="">Autonomous vehicles making split-second driving decisions</li>
+<li class="">Smart home devices responding to voice commands</li>
+<li class="">Industrial robots with real-time control</li>
+<li class="">Augmented reality applications</li>
+<li class="">Medical devices monitoring patient vitals</li>
+<li class="">Point-of-sale terminals in retail stores</li>
+</ul>
+<p><strong>Edge Devices Include:</strong></p>
+<ul>
+<li class="">IoT sensors and gateways</li>
+<li class="">Smartphones and tablets</li>
+<li class="">Smart home hubs</li>
+<li class="">Industrial controllers (PLCs)</li>
+<li class="">Raspberry Pi and similar single-board computers</li>
+<li class="">Network appliances and routers</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-this-architecture-matters">Why This Architecture Matters<a href="#why-this-architecture-matters" class="hash-link" aria-label="Direct link to Why This Architecture Matters" title="Direct link to Why This Architecture Matters" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-problem-with-cloud-only-architecture">The Problem with Cloud-Only Architecture<a href="#the-problem-with-cloud-only-architecture" class="hash-link" aria-label="Direct link to The Problem with Cloud-Only Architecture" title="Direct link to The Problem with Cloud-Only Architecture" translate="no">​</a></h3>
+<p>Traditional cloud computing faces several fundamental challenges:</p>
+<p><strong>1. Latency Issues</strong></p>
+<!-- -->
+<p>For applications requiring real-time response (autonomous vehicles, industrial control, gaming), this delay is unacceptable.</p>
+<p><strong>2. Bandwidth Constraints</strong></p>
+<p>Billions of IoT devices generating data creates a bottleneck:</p>
+<ul>
+<li class="">A single autonomous vehicle generates ~4TB of data per day</li>
+<li class="">Sending all sensor data to the cloud is impractical and expensive</li>
+<li class="">Network infrastructure cannot handle this volume</li>
+</ul>
+<p><strong>3. Privacy and Compliance</strong></p>
+<p>Certain data cannot or should not leave specific geographic boundaries:</p>
+<ul>
+<li class="">GDPR requirements in Europe</li>
+<li class="">HIPAA regulations for healthcare in the US</li>
+<li class="">Corporate policies for sensitive data</li>
+<li class="">National security considerations</li>
+</ul>
+<p><strong>4. Reliability Concerns</strong></p>
+<p>Dependence on internet connectivity creates vulnerabilities:</p>
+<ul>
+<li class="">Network outages can disable critical systems</li>
+<li class="">Cloud provider outages affect all dependent services</li>
+<li class="">Natural disasters can impact regional connectivity</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-cloud-fog-edge-solution">The Cloud-Fog-Edge Solution<a href="#the-cloud-fog-edge-solution" class="hash-link" aria-label="Direct link to The Cloud-Fog-Edge Solution" title="Direct link to The Cloud-Fog-Edge Solution" translate="no">​</a></h3>
+<p>By distributing computing across three layers, this architecture addresses each challenge:</p>
+<!-- -->
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="data-flow-patterns">Data Flow Patterns<a href="#data-flow-patterns" class="hash-link" aria-label="Direct link to Data Flow Patterns" title="Direct link to Data Flow Patterns" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="pattern-1-edge-first-processing">Pattern 1: Edge-First Processing<a href="#pattern-1-edge-first-processing" class="hash-link" aria-label="Direct link to Pattern 1: Edge-First Processing" title="Direct link to Pattern 1: Edge-First Processing" translate="no">​</a></h3>
+<p>Data is processed at the edge when possible, only forwarding essential information upstream.</p>
+<!-- -->
+<p><strong>Example: Smart Factory</strong></p>
+<ol>
+<li class=""><strong>Edge</strong>: Vibration sensor detects anomaly → immediately stops machine (2ms)</li>
+<li class=""><strong>Fog</strong>: Aggregates data from 100 machines → identifies pattern</li>
+<li class=""><strong>Cloud</strong>: Stores historical data → trains predictive maintenance model</li>
+</ol>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="pattern-2-hierarchical-filtering">Pattern 2: Hierarchical Filtering<a href="#pattern-2-hierarchical-filtering" class="hash-link" aria-label="Direct link to Pattern 2: Hierarchical Filtering" title="Direct link to Pattern 2: Hierarchical Filtering" translate="no">​</a></h3>
+<p>Each layer filters data, reducing volume exponentially as it moves toward the cloud.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Edge Layer:    1,000,000 data points/second (raw sensor readings)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">               ↓ (filter noise, duplicates)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Fog Layer:     10,000 data points/second (significant events)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">               ↓ (aggregate, summarize)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Cloud Layer:   100 data points/second (trends, patterns)</span><br></span></code></pre></div></div>
+<p><strong>Example: Video Surveillance</strong></p>
+<ol>
+<li class=""><strong>Edge</strong>: Cameras capture 30 fps video → detect motion (discard static frames)</li>
+<li class=""><strong>Fog</strong>: Process motion frames → identify persons/vehicles (discard empty frames)</li>
+<li class=""><strong>Cloud</strong>: Store only frames with detected objects → run facial recognition</li>
+</ol>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="pattern-3-bidirectional-processing">Pattern 3: Bidirectional Processing<a href="#pattern-3-bidirectional-processing" class="hash-link" aria-label="Direct link to Pattern 3: Bidirectional Processing" title="Direct link to Pattern 3: Bidirectional Processing" translate="no">​</a></h3>
+<p>Models trained in the cloud are deployed to edge devices for inference.</p>
+<!-- -->
+<p><strong>Example: Voice Assistant</strong></p>
+<ol>
+<li class=""><strong>Cloud</strong>: Trains speech recognition model on millions of samples</li>
+<li class=""><strong>Fog</strong>: Hosts regional language variations and accents</li>
+<li class=""><strong>Edge</strong>: Device performs real-time speech-to-text using deployed model</li>
+<li class=""><strong>Feedback</strong>: Unclear phrases sent back to cloud for model improvement</li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="real-world-applications">Real-World Applications<a href="#real-world-applications" class="hash-link" aria-label="Direct link to Real-World Applications" title="Direct link to Real-World Applications" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-industrial-iot-iiot">🏭 Industrial IoT (IIoT)<a href="#-industrial-iot-iiot" class="hash-link" aria-label="Direct link to 🏭 Industrial IoT (IIoT)" title="Direct link to 🏭 Industrial IoT (IIoT)" translate="no">​</a></h3>
+<p><strong>Scenario</strong>: Manufacturing plant with hundreds of machines, sensors, and robots.</p>
+<div class="theme-tabs-container tabs-container tabList__CuJ"><ul role="tablist" aria-orientation="horizontal" class="tabs"><li role="tab" tabindex="0" aria-selected="true" class="tabs__item tabItem_LNqP tabs__item--active">Edge Layer</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Fog Layer</li><li role="tab" tabindex="-1" aria-selected="false" class="tabs__item tabItem_LNqP">Cloud Layer</li></ul><div class="margin-top--md"><div role="tabpanel" class="tabItem_Ymn6"><p><strong>Processing Location</strong>: Each machine, robot, or production line</p><p><strong>Tasks:</strong></p><ul>
+<li class="">Real-time control loops (millisecond response)</li>
+<li class="">Safety monitoring and emergency stops</li>
+<li class="">Quality control inspection</li>
+<li class="">Equipment health monitoring</li>
+</ul><p><strong>Example</strong>: A robotic arm adjusts grip force based on sensor feedback in &lt;5ms</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Processing Location</strong>: Factory floor servers or local data center</p><p><strong>Tasks:</strong></p><ul>
+<li class="">Coordinating production line workflow</li>
+<li class="">Aggregating metrics from multiple machines</li>
+<li class="">Inventory management</li>
+<li class="">Predictive maintenance analysis</li>
+</ul><p><strong>Example</strong>: Analyzing vibration patterns from 50 machines to predict bearing failure</p></div><div role="tabpanel" class="tabItem_Ymn6" hidden=""><p><strong>Processing Location</strong>: Corporate data center or public cloud</p><p><strong>Tasks:</strong></p><ul>
+<li class="">Supply chain optimization</li>
+<li class="">Long-term analytics and reporting</li>
+<li class="">Machine learning model training</li>
+<li class="">Enterprise resource planning (ERP) integration</li>
+</ul><p><strong>Example</strong>: Training models on years of production data to optimize manufacturing processes</p></div></div></div>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-autonomous-vehicles">🚗 Autonomous Vehicles<a href="#-autonomous-vehicles" class="hash-link" aria-label="Direct link to 🚗 Autonomous Vehicles" title="Direct link to 🚗 Autonomous Vehicles" translate="no">​</a></h3>
+<p><strong>The Challenge</strong>: Self-driving cars must make life-or-death decisions in milliseconds while processing massive amounts of sensor data.</p>
+<p><strong>Multi-Layer Solution:</strong></p>
+<!-- -->
+<p><strong>Layer Responsibilities:</strong></p>
+<table><thead><tr><th>Decision Type</th><th>Latency Requirement</th><th>Processing Layer</th></tr></thead><tbody><tr><td>Emergency braking</td><td>&lt;10ms</td><td>Edge (vehicle)</td></tr><tr><td>Lane change decision</td><td>50-100ms</td><td>Edge (vehicle)</td></tr><tr><td>Route optimization</td><td>1-5s</td><td>Fog (roadside)</td></tr><tr><td>Traffic pattern analysis</td><td>Minutes</td><td>Cloud (backend)</td></tr><tr><td>Map updates</td><td>Hours</td><td>Cloud (backend)</td></tr></tbody></table>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-healthcare--telemedicine">🏥 Healthcare &amp; Telemedicine<a href="#-healthcare--telemedicine" class="hash-link" aria-label="Direct link to 🏥 Healthcare &amp; Telemedicine" title="Direct link to 🏥 Healthcare &amp; Telemedicine" translate="no">​</a></h3>
+<p><strong>Scenario</strong>: Remote patient monitoring with wearable devices.</p>
+<p><strong>Architecture:</strong></p>
+<p><strong>Edge (Wearable Device)</strong></p>
+<ul>
+<li class="">Continuous monitoring: heart rate, blood oxygen, ECG</li>
+<li class="">Immediate alerts for critical values</li>
+<li class="">Privacy: raw data never leaves device</li>
+<li class="">Battery optimization</li>
+</ul>
+<p><strong>Fog (Home Gateway/Hospital Server)</strong></p>
+<ul>
+<li class="">Aggregates data from multiple patients</li>
+<li class="">Trend analysis and pattern detection</li>
+<li class="">Sends alerts to medical staff</li>
+<li class="">Temporary storage for recent data</li>
+</ul>
+<p><strong>Cloud (Healthcare Provider Backend)</strong></p>
+<ul>
+<li class="">Long-term medical records</li>
+<li class="">Population health analytics</li>
+<li class="">Machine learning for disease prediction</li>
+<li class="">Integration with hospital systems</li>
+</ul>
+<p><strong>Why This Matters:</strong></p>
+<ul>
+<li class=""><strong>Speed</strong>: Critical alerts reach doctors in &lt;1 second</li>
+<li class=""><strong>Privacy</strong>: Sensitive health data processed locally</li>
+<li class=""><strong>Reliability</strong>: Monitoring continues if internet fails</li>
+<li class=""><strong>Cost</strong>: Reduces cloud data transfer by 95%</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-smart-cities">🌆 Smart Cities<a href="#-smart-cities" class="hash-link" aria-label="Direct link to 🌆 Smart Cities" title="Direct link to 🌆 Smart Cities" translate="no">​</a></h3>
+<p><strong>Scenario</strong>: City-wide infrastructure management for millions of residents.</p>
+<p><strong>System Components:</strong></p>
+<!-- -->
+<p><strong>Use Cases:</strong></p>
+<ol>
+<li class="">
+<p><strong>Traffic Management</strong></p>
+<ul>
+<li class="">Edge: Traffic lights adjust timing based on local sensors</li>
+<li class="">Fog: Coordinates lights across districts for optimal flow</li>
+<li class="">Cloud: Analyzes city-wide patterns for urban planning</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Public Safety</strong></p>
+<ul>
+<li class="">Edge: Cameras detect incidents, gunshots, accidents</li>
+<li class="">Fog: Correlates events across multiple cameras, dispatches emergency services</li>
+<li class="">Cloud: Long-term crime pattern analysis, resource allocation</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Environmental Monitoring</strong></p>
+<ul>
+<li class="">Edge: Air quality sensors measure pollution in real-time</li>
+<li class="">Fog: Creates neighborhood-level pollution maps</li>
+<li class="">Cloud: Analyzes trends, generates policy recommendations</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-content-delivery--streaming">📱 Content Delivery &amp; Streaming<a href="#-content-delivery--streaming" class="hash-link" aria-label="Direct link to 📱 Content Delivery &amp; Streaming" title="Direct link to 📱 Content Delivery &amp; Streaming" translate="no">​</a></h3>
+<p><strong>Scenario</strong>: Delivering video content to millions of users worldwide.</p>
+<p><strong>Traditional CDN Evolution:</strong></p>
+<!-- -->
+<p><strong>Modern Approach:</strong></p>
+<ul>
+<li class=""><strong>Cloud</strong>: Stores master copies, encodes content</li>
+<li class=""><strong>Fog</strong>: Regional caching, transcoding, analytics</li>
+<li class=""><strong>Edge</strong>: ISP-level caches, home routers, smart TVs</li>
+</ul>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li class="">90% of requests served from fog/edge (never hit origin)</li>
+<li class="">Video startup time &lt;100ms</li>
+<li class="">Adaptive bitrate based on local conditions</li>
+<li class="">Reduced bandwidth costs</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-retail--point-of-sale">🏪 Retail &amp; Point of Sale<a href="#-retail--point-of-sale" class="hash-link" aria-label="Direct link to 🏪 Retail &amp; Point of Sale" title="Direct link to 🏪 Retail &amp; Point of Sale" translate="no">​</a></h3>
+<p><strong>Scenario</strong>: Global retail chain with thousands of stores.</p>
+<p><strong>Architecture:</strong></p>
+<p><strong>Edge (Individual Store)</strong></p>
+<ul>
+<li class="">POS terminals processing transactions</li>
+<li class="">Inventory scanners tracking stock</li>
+<li class="">Customer behavior analytics</li>
+<li class="">Local product recommendations</li>
+</ul>
+<p><strong>Fog (Regional Distribution Center)</strong></p>
+<ul>
+<li class="">Aggregating sales from multiple stores</li>
+<li class="">Regional inventory management</li>
+<li class="">Fraud detection across stores</li>
+<li class="">Local supply chain optimization</li>
+</ul>
+<p><strong>Cloud (Corporate Headquarters)</strong></p>
+<ul>
+<li class="">Enterprise-wide analytics</li>
+<li class="">Long-term forecasting</li>
+<li class="">Supply chain planning</li>
+<li class="">Financial reporting</li>
+</ul>
+<p><strong>Advantage</strong>: Stores remain operational during internet outages, with data synced when connectivity returns.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-characteristics-comparison">Key Characteristics Comparison<a href="#key-characteristics-comparison" class="hash-link" aria-label="Direct link to Key Characteristics Comparison" title="Direct link to Key Characteristics Comparison" translate="no">​</a></h2>
+<table><thead><tr><th>Aspect</th><th>Cloud</th><th>Fog</th><th>Edge</th></tr></thead><tbody><tr><td><strong>Latency</strong></td><td>100-500ms</td><td>10-100ms</td><td>1-10ms</td></tr><tr><td><strong>Bandwidth</strong></td><td>High consumption</td><td>Medium consumption</td><td>Minimal consumption</td></tr><tr><td><strong>Processing Power</strong></td><td>Unlimited</td><td>Moderate</td><td>Limited</td></tr><tr><td><strong>Storage</strong></td><td>Petabytes+</td><td>Terabytes</td><td>Gigabytes</td></tr><tr><td><strong>Energy</strong></td><td>High</td><td>Medium</td><td>Low</td></tr><tr><td><strong>Cost per Resource</strong></td><td>Low</td><td>Medium</td><td>High</td></tr><tr><td><strong>Geographic Scope</strong></td><td>Global</td><td>Regional</td><td>Local</td></tr><tr><td><strong>Reliability</strong></td><td>99.99%+</td><td>99.9%</td><td>95-99%</td></tr><tr><td><strong>Management Complexity</strong></td><td>Centralized</td><td>Distributed</td><td>Highly distributed</td></tr><tr><td><strong>Use Cases</strong></td><td>Batch processing, ML training, storage</td><td>Real-time analytics, filtering</td><td>Control systems, immediate response</td></tr></tbody></table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="design-considerations">Design Considerations<a href="#design-considerations" class="hash-link" aria-label="Direct link to Design Considerations" title="Direct link to Design Considerations" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="when-to-use-each-layer">When to Use Each Layer<a href="#when-to-use-each-layer" class="hash-link" aria-label="Direct link to When to Use Each Layer" title="Direct link to When to Use Each Layer" translate="no">​</a></h3>
+<p><strong>Choose Cloud when:</strong></p>
+<ul>
+<li class="">Latency &gt;100ms is acceptable</li>
+<li class="">Need unlimited scalability</li>
+<li class="">Performing complex computations</li>
+<li class="">Centralized data management required</li>
+<li class="">Cost optimization is priority</li>
+</ul>
+<p><strong>Choose Fog when:</strong></p>
+<ul>
+<li class="">Need &lt;100ms latency</li>
+<li class="">Processing data from multiple edge sources</li>
+<li class="">Balancing edge constraints with cloud power</li>
+<li class="">Regional data compliance required</li>
+<li class="">Coordinating distributed systems</li>
+</ul>
+<p><strong>Choose Edge when:</strong></p>
+<ul>
+<li class="">Need &lt;10ms latency</li>
+<li class="">Real-time control required</li>
+<li class="">Privacy/security is critical</li>
+<li class="">Network connectivity unreliable</li>
+<li class="">Bandwidth costs are prohibitive</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="data-gravity-principle">Data Gravity Principle<a href="#data-gravity-principle" class="hash-link" aria-label="Direct link to Data Gravity Principle" title="Direct link to Data Gravity Principle" translate="no">​</a></h3>
+<blockquote>
+<p><strong>&quot;Data has mass. As it accumulates, it attracts applications and services.&quot;</strong></p>
+</blockquote>
+<p>In cloud-fog-edge architectures, consider:</p>
+<ul>
+<li class=""><strong>Where is data generated?</strong> (process close to source)</li>
+<li class=""><strong>Where is data consumed?</strong> (serve from nearest location)</li>
+<li class=""><strong>What is data volume?</strong> (avoid moving large datasets)</li>
+<li class=""><strong>What is data sensitivity?</strong> (keep private data local)</li>
+</ul>
+<!-- -->
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="technology-enablers">Technology Enablers<a href="#technology-enablers" class="hash-link" aria-label="Direct link to Technology Enablers" title="Direct link to Technology Enablers" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="containerization--orchestration">Containerization &amp; Orchestration<a href="#containerization--orchestration" class="hash-link" aria-label="Direct link to Containerization &amp; Orchestration" title="Direct link to Containerization &amp; Orchestration" translate="no">​</a></h3>
+<p>Modern cloud-fog-edge deployments rely on:</p>
+<ul>
+<li class=""><strong>Containers</strong>: Docker for consistent deployment</li>
+<li class=""><strong>Orchestration</strong>: Kubernetes for managing distributed services</li>
+<li class=""><strong>Lightweight distributions</strong>: K3s, MicroK8s for resource-constrained environments</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="service-mesh">Service Mesh<a href="#service-mesh" class="hash-link" aria-label="Direct link to Service Mesh" title="Direct link to Service Mesh" translate="no">​</a></h3>
+<p>Service mesh technologies enable:</p>
+<ul>
+<li class="">Service discovery across layers</li>
+<li class="">Load balancing and traffic management</li>
+<li class="">Security and encryption</li>
+<li class="">Observability and monitoring</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="edge-aiml">Edge AI/ML<a href="#edge-aiml" class="hash-link" aria-label="Direct link to Edge AI/ML" title="Direct link to Edge AI/ML" translate="no">​</a></h3>
+<p>Deploying machine learning at the edge:</p>
+<ul>
+<li class="">Model compression techniques</li>
+<li class="">Federated learning</li>
+<li class="">On-device inference</li>
+<li class="">Transfer learning</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="future-trends">Future Trends<a href="#future-trends" class="hash-link" aria-label="Direct link to Future Trends" title="Direct link to Future Trends" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="convergence-of-5g-and-edge-computing">Convergence of 5G and Edge Computing<a href="#convergence-of-5g-and-edge-computing" class="hash-link" aria-label="Direct link to Convergence of 5G and Edge Computing" title="Direct link to Convergence of 5G and Edge Computing" translate="no">​</a></h3>
+<p>Fifth-generation (5G) networks with ultra-low latency (~1ms) enable new applications:</p>
+<ul>
+<li class="">Remote surgery</li>
+<li class="">Tactile internet</li>
+<li class="">Massive IoT deployments</li>
+<li class="">Extended reality (XR)</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="edge-native-applications">Edge-Native Applications<a href="#edge-native-applications" class="hash-link" aria-label="Direct link to Edge-Native Applications" title="Direct link to Edge-Native Applications" translate="no">​</a></h3>
+<p>Software designed specifically for distributed edge environments:</p>
+<ul>
+<li class="">Auto-scaling across layers</li>
+<li class="">Seamless failover</li>
+<li class="">Location-aware processing</li>
+<li class="">Adaptive quality of service</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="serverless-at-the-edge">Serverless at the Edge<a href="#serverless-at-the-edge" class="hash-link" aria-label="Direct link to Serverless at the Edge" title="Direct link to Serverless at the Edge" translate="no">​</a></h3>
+<p>Function-as-a-Service (FaaS) extending to fog and edge:</p>
+<ul>
+<li class="">Event-driven processing</li>
+<li class="">Pay-per-invocation</li>
+<li class="">Automatic scaling</li>
+<li class="">No infrastructure management</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="conclusion">Conclusion<a href="#conclusion" class="hash-link" aria-label="Direct link to Conclusion" title="Direct link to Conclusion" translate="no">​</a></h2>
+<p>The cloud-fog-edge computing paradigm represents a fundamental shift in how we architect distributed systems. By strategically placing computation across three hierarchical layers, we can optimize for latency, bandwidth, privacy, and cost simultaneously.</p>
+<p>This architecture is not just theoretical—it&#x27;s being deployed today in:</p>
+<ul>
+<li class="">🏭 Smart factories and industrial automation</li>
+<li class="">🚗 Autonomous vehicles and transportation</li>
+<li class="">🏥 Healthcare and remote patient monitoring</li>
+<li class="">🌆 Smart city infrastructure</li>
+<li class="">📱 Mobile applications and content delivery</li>
+<li class="">🛍️ Retail and point-of-sale systems</li>
+</ul>
+<p>As edge devices become more powerful and 5G networks proliferate, the importance of this paradigm will only grow. Understanding cloud-fog-edge computing is essential for architects, developers, and operators building the next generation of distributed applications.</p>
+<hr>
+<p><strong>Further Reading:</strong></p>
+<ul>
+<li class="">Research papers on fog computing architectures</li>
+<li class="">Industry reports on edge computing adoption</li>
+<li class="">Case studies from IoT deployments</li>
+<li class="">Fifth-generation (5G) and edge computing integration</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/aprountzos/defogv2-wiki/tree/main/docs/docs/cloud-fog-edge.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/defogv2-wiki/docs/service-auto-exporter"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Service Auto-Exporter Controller</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/defogv2-wiki/docs/category/tutorial---basics"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Tutorial - Basics</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#what-is-cloud-fog-edge-computing" class="table-of-contents__link toc-highlight">What is Cloud-Fog-Edge Computing?</a></li><li><a href="#the-three-layers-explained" class="table-of-contents__link toc-highlight">The Three Layers Explained</a><ul><li><a href="#️-cloud-computing-layer" class="table-of-contents__link toc-highlight">☁️ Cloud Computing Layer</a></li><li><a href="#️-fog-computing-layer" class="table-of-contents__link toc-highlight">🌫️ Fog Computing Layer</a></li><li><a href="#-edge-computing-layer" class="table-of-contents__link toc-highlight">📱 Edge Computing Layer</a></li></ul></li><li><a href="#why-this-architecture-matters" class="table-of-contents__link toc-highlight">Why This Architecture Matters</a><ul><li><a href="#the-problem-with-cloud-only-architecture" class="table-of-contents__link toc-highlight">The Problem with Cloud-Only Architecture</a></li><li><a href="#the-cloud-fog-edge-solution" class="table-of-contents__link toc-highlight">The Cloud-Fog-Edge Solution</a></li></ul></li><li><a href="#data-flow-patterns" class="table-of-contents__link toc-highlight">Data Flow Patterns</a><ul><li><a href="#pattern-1-edge-first-processing" class="table-of-contents__link toc-highlight">Pattern 1: Edge-First Processing</a></li><li><a href="#pattern-2-hierarchical-filtering" class="table-of-contents__link toc-highlight">Pattern 2: Hierarchical Filtering</a></li><li><a href="#pattern-3-bidirectional-processing" class="table-of-contents__link toc-highlight">Pattern 3: Bidirectional Processing</a></li></ul></li><li><a href="#real-world-applications" class="table-of-contents__link toc-highlight">Real-World Applications</a><ul><li><a href="#-industrial-iot-iiot" class="table-of-contents__link toc-highlight">🏭 Industrial IoT (IIoT)</a></li><li><a href="#-autonomous-vehicles" class="table-of-contents__link toc-highlight">🚗 Autonomous Vehicles</a></li><li><a href="#-healthcare--telemedicine" class="table-of-contents__link toc-highlight">🏥 Healthcare &amp; Telemedicine</a></li><li><a href="#-smart-cities" class="table-of-contents__link toc-highlight">🌆 Smart Cities</a></li><li><a href="#-content-delivery--streaming" class="table-of-contents__link toc-highlight">📱 Content Delivery &amp; Streaming</a></li><li><a href="#-retail--point-of-sale" class="table-of-contents__link toc-highlight">🏪 Retail &amp; Point of Sale</a></li></ul></li><li><a href="#key-characteristics-comparison" class="table-of-contents__link toc-highlight">Key Characteristics Comparison</a></li><li><a href="#design-considerations" class="table-of-contents__link toc-highlight">Design Considerations</a><ul><li><a href="#when-to-use-each-layer" class="table-of-contents__link toc-highlight">When to Use Each Layer</a></li><li><a href="#data-gravity-principle" class="table-of-contents__link toc-highlight">Data Gravity Principle</a></li></ul></li><li><a href="#technology-enablers" class="table-of-contents__link toc-highlight">Technology Enablers</a><ul><li><a href="#containerization--orchestration" class="table-of-contents__link toc-highlight">Containerization &amp; Orchestration</a></li><li><a href="#service-mesh" class="table-of-contents__link toc-highlight">Service Mesh</a></li><li><a href="#edge-aiml" class="table-of-contents__link toc-highlight">Edge AI/ML</a></li></ul></li><li><a href="#future-trends" class="table-of-contents__link toc-highlight">Future Trends</a><ul><li><a href="#convergence-of-5g-and-edge-computing" class="table-of-contents__link toc-highlight">Convergence of 5G and Edge Computing</a></li><li><a href="#edge-native-applications" class="table-of-contents__link toc-highlight">Edge-Native Applications</a></li><li><a href="#serverless-at-the-edge" class="table-of-contents__link toc-highlight">Serverless at the Edge</a></li></ul></li><li><a href="#conclusion" class="table-of-contents__link toc-highlight">Conclusion</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/defogv2-wiki/docs">Docs Home</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/aprountzos/defogv2-wiki" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discord.gg/yourserver" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2025 Defog Platform. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

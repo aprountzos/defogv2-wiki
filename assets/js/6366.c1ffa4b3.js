@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdefogv_2_wiki=globalThis.webpackChunkdefogv_2_wiki||[]).push([[6366],{6366:(e,i,c)=>{c.d(i,{createArchitectureServices:()=>a.S});var a=c(8980);c(7960)}}]);
