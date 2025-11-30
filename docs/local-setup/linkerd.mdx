@@ -1,0 +1,614 @@
+---
+title: Linkerd Service Mesh
+description: Understanding Linkerd service mesh architecture and capabilities
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Linkerd Service Mesh
+
+## What is Linkerd?
+
+**Linkerd** is an open-source, ultra-light service mesh for Kubernetes. It provides critical features like observability, reliability, and security to your microservices without requiring any code changes to your applications.
+
+:::info Version
+This guide uses **Linkerd stable-2.14.10**, a production-ready version optimized for multi-cluster deployments.
+:::
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#667eea','primaryTextColor':'#fff','primaryBorderColor':'#4c63e8','lineColor':'#8099ec','background':'transparent','mainBkg':'#667eea','clusterBkg':'transparent','clusterBorder':'#4c63e8','fontSize':'14px'}}}%%
+graph TB
+    subgraph App["Your Application"]
+        S1["Service A"]
+        S2["Service B"]
+        S3["Service C"]
+    end
+    
+    subgraph Linkerd["Linkerd Service Mesh"]
+        CP["Control Plane<br/>Management"]
+        DP["Data Plane<br/>Proxies"]
+    end
+    
+    S1 <--> DP
+    S2 <--> DP
+    S3 <--> DP
+    DP <--> CP
+    
+    Features["✅ Automatic mTLS<br/>✅ Traffic Management<br/>✅ Observability<br/>✅ Reliability"]
+    
+    Linkerd -.-> Features
+    
+    classDef appStyle fill:#8099ec,stroke:#5e7ae9,stroke-width:2px,color:#fff
+    classDef meshStyle fill:#667eea,stroke:#4c63e8,stroke-width:3px,color:#fff
+    classDef featureStyle fill:#8fa8ed,stroke:#667eea,stroke-width:2px,color:#fff
+    
+    class S1,S2,S3 appStyle
+    class CP,DP meshStyle
+    class Features featureStyle
+```
+
+## Core Architecture
+
+Linkerd's architecture consists of two main components: the **Control Plane** and the **Data Plane**.
+
+### Control Plane
+
+The control plane is the "brain" of Linkerd, managing and configuring the data plane proxies.
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#667eea','primaryTextColor':'#fff','primaryBorderColor':'#4c63e8','lineColor':'#8099ec','background':'transparent','mainBkg':'#667eea','clusterBkg':'transparent','clusterBorder':'#4c63e8','fontSize':'13px'}}}%%
+graph TB
+    subgraph CP["Control Plane Components"]
+        Identity["Identity<br/>Certificate Authority"]
+        Destination["Destination<br/>Service Discovery"]
+        ProxyInj["Proxy Injector<br/>Auto-injection"]
+    end
+    
+    subgraph DP["Data Plane"]
+        P1["Proxy"]
+        P2["Proxy"]
+        P3["Proxy"]
+    end
+    
+    Identity -->|Issues Certs| DP
+    Destination -->|Service Info| DP
+    ProxyInj -->|Injects| DP
+    
+    classDef cpStyle fill:#667eea,stroke:#4c63e8,stroke-width:3px,color:#fff
+    classDef dpStyle fill:#764ba2,stroke:#5d3b82,stroke-width:2px,color:#fff
+    
+    class Identity,Destination,ProxyInj cpStyle
+    class P1,P2,P3 dpStyle
+```
+
+**Key Components:**
+
+| Component | Purpose | Function |
+|-----------|---------|----------|
+| **Identity** | Certificate Authority | Issues and manages mTLS certificates for all proxies |
+| **Destination** | Service Discovery | Provides endpoint information and routing rules |
+| **Proxy Injector** | Automatic Injection | Automatically adds Linkerd proxy to pods |
+
+### Data Plane
+
+The data plane consists of lightweight proxies deployed as sidecars alongside your application containers.
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#667eea','primaryTextColor':'#fff','primaryBorderColor':'#4c63e8','lineColor':'#8099ec','background':'transparent','clusterBkg':'transparent','clusterBorder':'#4c63e8','fontSize':'14px'}}}%%
+graph LR
+    subgraph Pod["Kubernetes Pod"]
+        App["Application<br/>Container"]
+        Proxy["Linkerd<br/>Proxy"]
+        Init["linkerd-init<br/>Container"]
+    end
+    
+    Client["Client"] -->|Request| Proxy
+    Proxy -->|Intercepts| App
+    App -->|Response| Proxy
+    Proxy -->|Routes| Client
+    
+    Init -.->|Sets up<br/>iptables| Proxy
+    
+    classDef appStyle fill:#8099ec,stroke:#5e7ae9,stroke-width:2px,color:#fff
+    classDef proxyStyle fill:#667eea,stroke:#4c63e8,stroke-width:3px,color:#fff
+    classDef initStyle fill:#8fa8ed,stroke:#667eea,stroke-width:1px,color:#fff,stroke-dasharray: 5 5
+    
+    class App appStyle
+    class Proxy proxyStyle
+    class Init initStyle
+```
+
+**Proxy Responsibilities:**
+
+- **Traffic Interception**: Captures all inbound and outbound traffic
+- **mTLS Encryption**: Automatically encrypts communication between services
+- **Load Balancing**: Distributes requests across healthy endpoints
+- **Metrics Collection**: Gathers detailed telemetry data
+- **Circuit Breaking**: Prevents cascading failures
+
+## Key Features
+
+### 1. Automatic Mutual TLS (mTLS)
+
+Linkerd automatically secures all communication between services with mutual TLS encryption.
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'actorBkg':'#667eea','actorBorder':'#4c63e8','actorTextColor':'#fff','signalColor':'#8099ec','signalTextColor':'inherit','noteBkgColor':'#8fa8ed','noteBorderColor':'#667eea','noteTextColor':'#fff','fontSize':'14px'}}}%%
+sequenceDiagram
+    participant S1 as Service A<br/>Proxy
+    participant CA as Identity CA
+    participant S2 as Service B<br/>Proxy
+    
+    S1->>CA: Request Certificate
+    CA->>S1: Issue Certificate
+    
+    S2->>CA: Request Certificate
+    CA->>S2: Issue Certificate
+    
+    S1->>S2: mTLS Handshake
+    Note over S1,S2: Verify Certificates
+    
+    S1->>S2: Encrypted Request
+    S2->>S1: Encrypted Response
+    
+    Note over S1,S2: All traffic encrypted<br/>No code changes!
+```
+
+**Benefits:**
+- ✅ Zero-trust security by default
+- ✅ Automatic certificate rotation
+- ✅ No application code changes required
+- ✅ Defense against man-in-the-middle attacks
+
+### 2. Observability
+
+Linkerd provides real-time metrics, distributed tracing, and service topology visualization.
+
+**Metrics Available:**
+- Request rate (RPS)
+- Success rate
+- Latency percentiles (P50, P95, P99)
+- TCP-level statistics
+
+**Access via Linkerd Viz:**
+```bash
+linkerd viz dashboard
+```
+
+### 3. Traffic Management
+
+Control how traffic flows between services with powerful routing capabilities.
+
+**Capabilities:**
+- Traffic splitting (A/B testing, canary deployments)
+- Retries and timeouts
+- Circuit breaking
+- Load balancing algorithms
+
+### 4. Multi-Cluster Support
+
+Linkerd Multicluster enables secure communication across Kubernetes clusters.
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#667eea','primaryTextColor':'#fff','primaryBorderColor':'#4c63e8','lineColor':'#8099ec','background':'transparent','mainBkg':'#667eea','clusterBkg':'transparent','clusterBorder':'#4c63e8','fontSize':'14px'}}}%%
+graph TB
+    subgraph C1["Cluster 1 - Source"]
+        S1["Service A"]
+        GW1["Gateway<br/>:4143"]
+    end
+    
+    subgraph C2["Cluster 2 - Target"]
+        S2["Service B"]
+        S2M["Service B<br/>Mirrored"]
+        GW2["Gateway<br/>:4143"]
+    end
+    
+    S1 -->|Discovers| S2M
+    S2M -->|Routes via| GW1
+    GW1 <-->|mTLS Tunnel| GW2
+    GW2 --> S2
+    
+    classDef svcStyle fill:#8099ec,stroke:#5e7ae9,stroke-width:2px,color:#fff
+    classDef gwStyle fill:#764ba2,stroke:#5d3b82,stroke-width:3px,color:#fff
+    classDef mirrorStyle fill:#8fa8ed,stroke:#667eea,stroke-width:2px,color:#fff
+    
+    class S1,S2 svcStyle
+    class GW1,GW2 gwStyle
+    class S2M mirrorStyle
+```
+
+## Linkerd Components
+
+### Core Installation
+
+<Tabs>
+<TabItem value="crds" label="CRDs" default>
+
+**Custom Resource Definitions** - Kubernetes API extensions for Linkerd
+
+```bash
+linkerd install --crds | kubectl apply -f -
+```
+
+Defines resources like:
+- `ServiceProfile` - Service-level configuration
+- `TrafficSplit` - Traffic splitting rules
+- `Link` - Multi-cluster connections
+
+</TabItem>
+
+<TabItem value="control-plane" label="Control Plane">
+
+**Control Plane** - Core Linkerd components
+
+```bash
+linkerd install | kubectl apply -f -
+```
+
+Deploys:
+- Identity service
+- Destination service
+- Proxy injector
+
+</TabItem>
+
+<TabItem value="viz" label="Linkerd Viz">
+
+**Visualization & Monitoring** - Observability dashboard
+
+```bash
+linkerd viz install | kubectl apply -f -
+```
+
+Includes:
+- Prometheus (metrics storage)
+- Grafana (dashboards)
+- Web UI (service topology)
+- Tap API (real-time traffic inspection)
+
+</TabItem>
+
+<TabItem value="multicluster" label="Multicluster">
+
+**Multi-Cluster Extension** - Cross-cluster communication
+
+```bash
+linkerd multicluster install | kubectl apply -f -
+```
+
+Provides:
+- Gateway (secure tunnel endpoint)
+- Service mirror (automatic service discovery)
+- Link controller (manages connections)
+
+</TabItem>
+</Tabs>
+
+## Linkerd Multicluster
+
+### Architecture
+
+Linkerd Multicluster enables services in one cluster to securely communicate with services in another cluster.
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#667eea','primaryTextColor':'#fff','primaryBorderColor':'#4c63e8','lineColor':'#8099ec','background':'transparent','mainBkg':'#667eea','clusterBkg':'transparent','clusterBorder':'#4c63e8','fontSize':'13px'}}}%%
+graph TB
+    subgraph Source["Source Cluster"]
+        AppS["Application"]
+        LocalS["Local<br/>Service"]
+        MirrorS["Mirrored<br/>Service"]
+        GWS["Gateway<br/>Pod"]
+    end
+    
+    subgraph Target["Target Cluster"]
+        GWT["Gateway<br/>Service<br/>(LoadBalancer)"]
+        RemoteS["Remote<br/>Service"]
+    end
+    
+    AppS -->|1. DNS Lookup| MirrorS
+    MirrorS -->|2. Route to| GWS
+    GWS <-->|3. Secure mTLS| GWT
+    GWT -->|4. Forward to| RemoteS
+    
+    classDef appStyle fill:#8099ec,stroke:#5e7ae9,stroke-width:2px,color:#fff
+    classDef localStyle fill:#8fa8ed,stroke:#667eea,stroke-width:2px,color:#fff
+    classDef gwStyle fill:#764ba2,stroke:#5d3b82,stroke-width:3px,color:#fff
+    classDef remoteStyle fill:#667eea,stroke:#4c63e8,stroke-width:2px,color:#fff
+    
+    class AppS appStyle
+    class LocalS,MirrorS localStyle
+    class GWS,GWT gwStyle
+    class RemoteS remoteStyle
+```
+
+### How It Works
+
+1. **Service Export**: Mark services for export with a label
+   ```yaml
+   labels:
+     to-export: "true"
+   ```
+
+2. **Service Mirroring**: Linkerd automatically creates mirror services in linked clusters
+   ```
+   hello              # Original service (Cluster B)
+   hello-cluster-b    # Mirrored service (Cluster A)
+   ```
+
+3. **Gateway Routing**: Traffic to mirrored services routes through secure gateways
+
+4. **Transparent Access**: Applications use standard Kubernetes DNS
+   ```bash
+   curl http://hello-cluster-b:8080
+   ```
+
+### Components
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| **Link** | Source Cluster | Defines connection to target cluster |
+| **Service Mirror** | Source Cluster | Watches target cluster and creates mirrors |
+| **Gateway** | Target Cluster | Provides entry point for cross-cluster traffic |
+| **Probe Service** | Source Cluster | Health checks gateway connectivity |
+
+### Traffic Flow Example
+
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'actorBkg':'#667eea','actorBorder':'#4c63e8','actorTextColor':'#fff','signalColor':'#8099ec','signalTextColor':'inherit','noteBkgColor':'#8fa8ed','noteBorderColor':'#667eea','noteTextColor':'#fff','fontSize':'13px'}}}%%
+sequenceDiagram
+    participant App as App Pod<br/>(Cluster A)
+    participant DNS as CoreDNS
+    participant Mirror as Mirror Svc<br/>(Cluster A)
+    participant GWA as Gateway<br/>(Cluster A)
+    participant GWB as Gateway<br/>(Cluster B)
+    participant Svc as Service<br/>(Cluster B)
+    
+    App->>DNS: Resolve hello-cluster-b
+    DNS->>App: Return ClusterIP
+    
+    App->>Mirror: HTTP Request
+    Mirror->>GWA: Forward to Gateway
+    
+    Note over GWA,GWB: mTLS Encrypted Tunnel
+    
+    GWA->>GWB: Secure Request
+    GWB->>Svc: Forward to Service
+    Svc->>GWB: Response
+    GWB->>GWA: Secure Response
+    
+    GWA->>Mirror: Forward Response
+    Mirror->>App: HTTP Response
+```
+
+## Linkerd Viz Dashboard
+
+Linkerd Viz provides a web-based dashboard for monitoring your service mesh.
+
+### Features
+
+**Service Topology**
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#667eea','primaryTextColor':'#fff','primaryBorderColor':'#4c63e8','lineColor':'#8099ec','background':'transparent','fontSize':'14px'}}}%%
+graph LR
+    Frontend["frontend<br/>100% success<br/>10ms p95"]
+    Cart["cart<br/>99.9% success<br/>5ms p95"]
+    Catalog["catalog<br/>100% success<br/>15ms p95"]
+    
+    Frontend -->|50 RPS| Cart
+    Frontend -->|30 RPS| Catalog
+    
+    classDef goodStyle fill:#8fa8ed,stroke:#667eea,stroke-width:2px,color:#fff
+    classDef warnStyle fill:#ffd700,stroke:#ffa500,stroke-width:2px,color:#000
+    
+    class Frontend,Cart,Catalog goodStyle
+```
+
+**Metrics Available:**
+- **Success Rate**: Percentage of successful requests
+- **RPS**: Requests per second
+- **Latencies**: P50, P95, P99 percentiles
+- **TCP Stats**: Bytes sent/received, connection count
+
+### Accessing the Dashboard
+
+```bash
+# Start dashboard
+linkerd viz dashboard
+
+# Access in browser
+open http://localhost:50750
+```
+
+### Live Traffic Tap
+
+Inspect live traffic in real-time:
+
+```bash
+# Watch requests to a deployment
+linkerd viz tap deploy/frontend
+
+# Filter by HTTP method
+linkerd viz tap deploy/frontend --method POST
+
+# Watch traffic between services
+linkerd viz tap deploy/frontend --to deploy/cart
+```
+
+## Benefits for Multi-Cluster Environments
+
+### Security
+
+- **Zero-Trust**: Every connection authenticated and encrypted
+- **Certificate Rotation**: Automatic rotation every 24 hours
+- **Identity**: Strong identity for every workload
+
+### Reliability
+
+- **Automatic Retries**: Retry failed requests automatically
+- **Timeouts**: Prevent hanging requests
+- **Circuit Breaking**: Fail fast when services are unhealthy
+
+### Observability
+
+- **Golden Metrics**: Success rate, latency, throughput
+- **Service Graph**: Visual representation of service dependencies
+- **Distributed Tracing**: Track requests across services and clusters
+
+### Performance
+
+- **Ultra-Light Proxy**: Written in Rust, minimal resource usage
+- **Low Latency**: Sub-millisecond proxy overhead
+- **No Configuration**: Works out of the box
+
+## Common Use Cases
+
+### 1. Canary Deployments
+
+Gradually roll out new versions:
+
+```yaml
+apiVersion: split.smi-spec.io/v1alpha1
+kind: TrafficSplit
+metadata:
+  name: frontend-split
+spec:
+  service: frontend
+  backends:
+  - service: frontend-v1
+    weight: 90
+  - service: frontend-v2
+    weight: 10
+```
+
+### 2. Cross-Cluster Failover
+
+Route traffic to backup cluster when primary fails:
+
+```yaml
+apiVersion: split.smi-spec.io/v1alpha1
+kind: TrafficSplit
+metadata:
+  name: api-failover
+spec:
+  service: api
+  backends:
+  - service: api-local
+    weight: 100
+  - service: api-backup-cluster
+    weight: 0
+```
+
+### 3. Multi-Tenant Isolation
+
+Separate production and staging clusters:
+
+```
+Production Cluster ← → Staging Cluster
+      ↓                      ↓
+   Services A-Z         Services A-Z (test)
+```
+
+## Best Practices
+
+### 1. Certificate Management
+
+- Use a secure trust anchor
+- Rotate certificates regularly
+- Store CA keys securely
+
+### 2. Resource Limits
+
+Set appropriate resource limits for proxies:
+
+```yaml
+resources:
+  requests:
+    cpu: 100m
+    memory: 20Mi
+  limits:
+    cpu: 1000m
+    memory: 250Mi
+```
+
+### 3. Namespace Injection
+
+Enable automatic injection per namespace:
+
+```bash
+kubectl annotate namespace my-app linkerd.io/inject=enabled
+```
+
+### 4. Service Profiles
+
+Define service-level configuration:
+
+```yaml
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: frontend.default.svc.cluster.local
+spec:
+  routes:
+  - name: GET /api/products
+    condition:
+      method: GET
+      pathRegex: /api/products
+    timeout: 1s
+    retries:
+      limit: 3
+```
+
+## Troubleshooting
+
+### Check Linkerd Status
+
+```bash
+# Check control plane
+linkerd check
+
+# Check data plane
+linkerd check --proxy
+
+# Check multicluster
+linkerd multicluster check
+```
+
+### View Proxy Logs
+
+```bash
+# View proxy logs for a pod
+kubectl logs <pod-name> -c linkerd-proxy
+
+# Follow logs
+kubectl logs <pod-name> -c linkerd-proxy -f
+```
+
+### Debug Service Mesh
+
+```bash
+# Get proxy statistics
+linkerd viz stat deploy
+
+# View service endpoints
+linkerd viz endpoints <service>
+
+# Check proxy configuration
+linkerd diagnostics proxy-metrics <pod>
+```
+
+## Next Steps
+
+Now that you understand Linkerd's architecture and capabilities:
+
+- **[Traffic Management](/docs/local-setup/traffic-splits)** - Learn about TrafficSplits and routing
+- **[Creating Clusters](/docs/local-setup/creating-clusters)** - Set up your multi-cluster environment
+- **[Installing Linkerd](/docs/local-setup/installing-linkerd)** - Deploy Linkerd in your clusters
+
+---
+
+**Resources:**
+- [Official Linkerd Documentation](https://linkerd.io/2.14/overview/)
+- [Linkerd Architecture](https://linkerd.io/2.14/reference/architecture/)
+- [Multicluster Communication](https://linkerd.io/2.14/features/multicluster/)
